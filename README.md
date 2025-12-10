@@ -48,15 +48,18 @@ Calculated Columns	SELECT (population / SurfaceArea) AS 'Population Density' FRO
 Subquery	SELECT * FROM country WHERE (GNP / Population) > (SELECT AVG(GNP / Population) FROM country);	Queries nested within another query. Useful for comparative analysis.
 
 ### Queries and Their Purpose
-1. Count Total Cities in the USA
+***1. Count Total Cities in the USA***
+
 SELECT COUNT(*) AS TotalCitiesInUSA
 FROM City
 WHERE CountryCode = 'USA';
 
+<img width="846" height="252" alt="Screenshot 2025-12-10 at 14 33 30" src="https://github.com/user-attachments/assets/a9d3f454-79ba-4a4a-adf1-0df638729dda" />
 
-Purpose: Counts the total number of cities in the USA. Useful for quickly understanding dataset size for a specific country.
+Purpose: Counts the total number of cities in the USA. Useful for quickly understanding the dataset size for a specific country.
 
-2. View All Cities
+***2. View All Cities***
+
 SELECT *
 FROM city;
 
@@ -64,16 +67,19 @@ FROM city;
 
 Purpose: Retrieves all rows and columns in the city table. Useful for exploring data structure and available information.
 
-3. Top 5 Countries by Life Expectancy
+***3. Top 5 Countries by Life Expectancy***
+
 SELECT name, LifeExpectancy
 FROM Country
 ORDER BY LifeExpectancy DESC
 LIMIT 5;
 
+<img width="925" height="549" alt="Screenshot 2025-12-10 at 14 34 46" src="https://github.com/user-attachments/assets/43db27db-2896-4d83-8dc3-b1a7046ab669" />
 
 Purpose: Identifies countries with the highest life expectancy.
 
-4. Frequency of City Names
+***4. Frequency of City Names***
+
 SELECT 
     Name AS CityName,
     COUNT(*) AS Frequency
@@ -82,45 +88,55 @@ GROUP BY Name
 ORDER BY Name ASC
 LIMIT 100;
 
+<img width="918" height="610" alt="Screenshot 2025-12-10 at 14 36 29" src="https://github.com/user-attachments/assets/b9d82bae-2507-469d-ad7e-ef3116083465" />
 
 Purpose: Shows how often each city name occurs, helping to identify duplicates or common names.
 
-5. View All Countries
+***5. View All Countries***
+
 SELECT *
 FROM country;
 
+<img width="969" height="424" alt="Screenshot 2025-12-10 at 14 50 46" src="https://github.com/user-attachments/assets/f42a1284-3861-4ba8-9655-26469ca9ac54" />
 
 Purpose: Retrieves all data from the country table, including population, GNP, and continent.
 
-6. City with Smallest Population
+***6. City with Smallest Population***
+
 SELECT name, population
 FROM city
 ORDER BY population ASC
 LIMIT 1;
 
+<img width="921" height="488" alt="Screenshot 2025-12-10 at 14 52 03" src="https://github.com/user-attachments/assets/9b79124b-d8f7-4ebd-b40a-bc236a6f0da2" />
 
 Purpose: Finds the city with the lowest population.
 
-7. Capital of Spain
+***7. Capital of Spain***
+
 SELECT city.Name AS Capital
 FROM country
 JOIN city ON country.Capital = city.ID
 WHERE country.Name = 'Spain';
 
+<img width="921" height="571" alt="Screenshot 2025-12-10 at 14 54 32" src="https://github.com/user-attachments/assets/64c6568f-4a65-42ab-9e5d-49ee7c9e7cc1" />
 
 Purpose: Retrieves the capital using a JOIN to link country and city data.
 
-8. European Cities
-SELECT city.Name AS 'European Cities'
+***8. European Cities***
+
+SELECT city.Name AS 'EuropeanCities'
 FROM city
 JOIN country ON city.CountryCode = country.Code
 WHERE country.Continent = 'Europe'
 ORDER BY city.Name ASC;
 
+<img width="925" height="484" alt="Screenshot 2025-12-10 at 14 56 55" src="https://github.com/user-attachments/assets/95157d02-4d88-49f7-af54-0c9398afd609" />
 
 Purpose: Lists all cities in Europe alphabetically.
 
-9. Population Aggregations by Country
+***9. Population Aggregations by Country***
+
 SELECT 
     country.Name AS Country,
     SUM(city.Population) AS TotalPopulation,
@@ -130,10 +146,12 @@ JOIN country ON city.CountryCode = country.Code
 GROUP BY country.Name
 ORDER BY country.Name ASC;
 
+<img width="933" height="569" alt="Screenshot 2025-12-10 at 14 57 42" src="https://github.com/user-attachments/assets/0ca9f3e3-eae6-4cb8-89d0-5eeb837597c4" />
 
 Purpose: Calculates total and average city populations per country.
 
-10. Capital Cities Ordered by Population
+***10. Capital Cities Ordered by Population***
+
 SELECT 
     country.Name AS Country,
     city.Name AS CapitalCity,
@@ -142,19 +160,23 @@ FROM country
 JOIN city ON country.Capital = city.ID
 ORDER BY city.Population DESC;
 
+<img width="933" height="554" alt="Screenshot 2025-12-10 at 15 02 29" src="https://github.com/user-attachments/assets/67cad23f-f240-43d8-b467-65cadc8560c6" />
 
 Purpose: Lists capitals by population to identify the largest capital cities.
 
-11. Population Density
+***11. Population Density***
+
 SELECT name, population, SurfaceArea,
 (population / SurfaceArea) AS PopulationDensity
 FROM country
 ORDER BY PopulationDensity DESC;
 
+<img width="920" height="515" alt="Screenshot 2025-12-10 at 15 03 01" src="https://github.com/user-attachments/assets/284eb5fd-ff52-4fe8-8a6a-77a3048fdeab" />
 
 Purpose: Calculates population density for each country.
 
-12. GDP per Capita Above Average
+***12. GDP per Capita Above Average***
+
 SELECT 
     city.Name AS City,
     country.Name AS Country,
@@ -165,10 +187,12 @@ WHERE (country.GNP / country.Population) > (SELECT AVG(country.GNP / country.Pop
 ORDER BY GDPperCapita DESC
 LIMIT 1000;
 
+<img width="934" height="604" alt="Screenshot 2025-12-10 at 15 03 55" src="https://github.com/user-attachments/assets/23f19571-7709-43c5-b9eb-e5c627123cda" />
 
 Purpose: Identifies cities in wealthier countries with GDP per capita above the global average.
 
-13. Pagination Example: 10 Cities with Offset
+***13. Pagination Example: 10 Cities with Offset***
+
 SELECT 
     Name AS City,
     CountryCode AS Country,
@@ -177,10 +201,11 @@ FROM city
 ORDER BY Population DESC
 LIMIT 10 OFFSET 30;
 
+<img width="937" height="532" alt="Screenshot 2025-12-10 at 15 12 07" src="https://github.com/user-attachments/assets/86b4c54e-035b-4f41-88ee-b68bd6d3b663" />
 
 Purpose: Retrieves a specific subset of cities by population, demonstrating pagination.
 
-How I Applied SQL Skills in a Real-World Context
+**How I Applied SQL Skills in a Real-World Context
 
 In this project, I applied a range of SQL techniques to explore and analyse the world database, simulating tasks a data analyst might face in a real work environment:
 
